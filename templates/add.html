@@ -34,7 +34,7 @@
 
         <form action="/add" method="post">
         {% csrf_token %}
-        <textarea class="form-control" placeholder="Question" name="question"></textarea>
+        <textarea class="form-control" placeholder="Question" name="question" rows="7"></textarea>
         <select name="type" class="form-select mt-2">
             <option value="1">Normal</option>
             <option value="2">On a soif</option>
@@ -52,6 +52,7 @@
 <script>
     const types = ['', 'Normal', 'On a soif', 'Hot'];
     const color_types = ['', '', 'bg-warning', 'bg-danger'];
+
     async function edit(id, question, type){
         let fd = new FormData();
         fd.append('id', id);
@@ -75,7 +76,7 @@
 				title: 'Modifier les infos :',
 				html: `<div>
                             Question :
-                            <textarea type="text" id="question" class="form-control" placeholder="Question ...">${question}</textarea>
+                            <textarea type="text" id="qqq" class="form-control" placeholder="Question ...">${question}</textarea>
                             Type :
                             <select id="type" class="form-select">
                                 <option value="1" ${(type == 1 ? 'selected' : '')}>Normal</option>
@@ -86,10 +87,10 @@
 				confirmButtonText: 'Modifier',
 				didOpen: () => {
 				    console.log(type);
-
+                    $('#qqq').height( $('#qqq')[0].scrollHeight )
 				},
 				preConfirm: async () => {
-				    question = Swal.getPopup().querySelector('#question').value;
+				    question = Swal.getPopup().querySelector('#qqq').value;
 				    type = Swal.getPopup().querySelector('#type').value;
 					const ajax = await edit(id, question, type);
                     if (!ajax.success) {
