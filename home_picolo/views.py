@@ -1,11 +1,12 @@
 import json
 import random
 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
 from django.template import loader
+from django.views.decorators.csrf import csrf_exempt
 
 from home_picolo.models import Question
 
@@ -47,7 +48,7 @@ def hot(request):
     return HttpResponse(template.render({'list': json.dumps(p), 'color': 'darkred'}, request))
 
 
-def add_api(request):
+def add(request):
     print(request.COOKIES.get('players'))
     print(request.POST.get('type'))
     questions = Question.objects.all().order_by('type')
@@ -64,6 +65,28 @@ def add_api(request):
                 'questions': questions
             })
     return render(request, 'add.html', {'questions': questions})
+
+@csrf_exempt
+def add_api(request):
+    if request.POST.get('question') is not None and request.POST.get('type') is not None and request.POST.get('type') in ['1','2','3']:
+        try:
+            q = Question.objects.get(id=request.POST.get('id'))
+            q.type = request.POST.get('type')
+            q.question = question = request.POST.get('question')
+            q.save()
+            return JsonResponse({
+                'msg': "Ajouté",
+                'success': True
+            }, safe=False)
+        except:
+            return JsonResponse({
+                'msg': "Echec",
+                'success': False
+            }, safe=False)
+    return JsonResponse({
+                'msg': "Echec",
+                'success': False
+            }, safe=False)
 
 
 

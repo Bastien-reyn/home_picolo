@@ -45,10 +45,67 @@
 	</div>
     <div class="mt-4 text-left">
         {% for q in questions %}
-            <p class="{{ q.type|role_color }} p-1"><b>{{ q.type|role_replace }}</b> <br>{{ q.question }}</p><hr>
+            <p data-id="{{ q.id }}" data-type="{{ q.type }}" class="{{ q.type|role_color }} p-1 question"><b>{{ q.type|role_replace }}</b> <br><span>{{ q.question }}</span></p><hr>
         {% endfor %}
 
     </div>
+<script>
+    const types = ['', 'Normal', 'On a soif', 'Hot'];
+    const color_types = ['', '', 'bg-warning', 'bg-danger'];
+    async function edit(id, question, type){
+        let fd = new FormData();
+        fd.append('id', id);
+        fd.append('type', type);
+        fd.append('question', question);
+        return $.ajax({
+            url: '/_add', // get the items into the repair
+            data: fd,
+            processData: false,
+            type: 'POST',
+            contentType: false,
+        });
+    }
+    $(function () {
+        $(document).on('click', '.question', function () {
+            let th = this;
+            let id = $(th).data('id');
+            let type = $(th).data('type');
+            let question = $(th).find('span').text();
+            Swal.fire({
+				title: 'Modifier les infos :',
+				html: `<div>
+                            Question :
+                            <input type="text" id="question" class="swal2-input" placeholder="Titre ..." value="${question}">
+                            Type :
+                            <select id="type" class="form-select">
+                                <option value="1" ${(type == 1 ? 'selected' : '')}>Normal</option>
+                                <option value="2" ${(type == 2 ? 'selected' : '')}>On a soif</option>
+                                <option value="3" ${(type == 3 ? 'selected' : '')}>Hot</option>
+                            </select>
+                        </div>`,
+				confirmButtonText: 'Modifier',
+				didOpen: () => {
+				    console.log(type);
+
+				},
+				preConfirm: async () => {
+				    question = Swal.getPopup().querySelector('#question').value;
+				    type = Swal.getPopup().querySelector('#type').value;
+					const ajax = await edit(id, question, type);
+                    if (!ajax.success) {
+						Swal.showValidationMessage(`Erreur`)
+					}else{
+                        $(th).find('span').html(question);
+                        $(th).find('b').html(types[type]);
+                        $(th).attr('class', `${color_types[type]} p-1 question`);
+                        $(th).data('type', type);
+
+                    }
+				}
+			})
+        })
+    })
+</script>
 </div>
 </body>
 </html>
