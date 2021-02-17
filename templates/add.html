@@ -75,7 +75,7 @@
 				title: 'Modifier les infos :',
 				html: `<div>
                             Question :
-                            <input type="text" id="question" class="swal2-input" placeholder="Titre ..." value="${question}">
+                            <textarea type="text" id="question" class="form-control" placeholder="Question ...">${question}</textarea>
                             Type :
                             <select id="type" class="form-select">
                                 <option value="1" ${(type == 1 ? 'selected' : '')}>Normal</option>
