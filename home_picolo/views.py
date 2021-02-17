@@ -1,6 +1,7 @@
 import json
 import random
 
+from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
 
@@ -48,11 +49,20 @@ def hot(request):
     return HttpResponse(template.render({'list': json.dumps(p), 'color': 'darkred'}, request))
 
 
+def tod(request):
+    p = []
+    template = loader.get_template('question.html')
+    questions = Question.objects.filter(Q(type=4) | Q(type=1))
+    for q in questions:
+        p.append({'question': q.question, 'type': q.type})
+    return HttpResponse(template.render({'list': json.dumps(p), 'color': '#0dcaf0'}, request))
+
+
 def add(request):
     print(request.COOKIES.get('players'))
     print(request.POST.get('type'))
     questions = Question.objects.all().order_by('type')
-    if request.POST.get('question') is not None and request.POST.get('type') is not None and request.POST.get('type') in ['1','2','3']:
+    if request.POST.get('question') is not None and request.POST.get('type') is not None and request.POST.get('type') in ['1','2','3', '4']:
         try:
             Question.objects.create(type=request.POST.get('type'), question=request.POST.get('question'))
             return render(request, 'add.html', {
@@ -68,7 +78,7 @@ def add(request):
 
 @csrf_exempt
 def add_api(request):
-    if request.POST.get('question') is not None and request.POST.get('type') is not None and request.POST.get('type') in ['1','2','3']:
+    if request.POST.get('question') is not None and request.POST.get('type') is not None and request.POST.get('type') in ['1','2','3', '4']:
         try:
             q = Question.objects.get(id=request.POST.get('id'))
             q.type = request.POST.get('type')

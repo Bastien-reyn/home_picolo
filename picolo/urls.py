@@ -25,6 +25,7 @@ urlpatterns = [
     path('normal', views.normal, name='normal'),
     path('hot', views.hot, name='normal'),
     path('drink', views.drink, name='normal'),
+    path('tod', views.tod, name='normal'),
     path('add', views.add, name='normal'),
     path('_add', views.add_api, name='normal'),
 

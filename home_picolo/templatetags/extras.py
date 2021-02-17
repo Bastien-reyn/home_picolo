@@ -4,12 +4,12 @@ register = template.Library()
 
 
 def role_replace(value):
-    role = ['', 'Normal', 'On a soif', 'Hot']
+    role = ['', 'Normal', 'On a soif', 'Hot', 'Action ou verité']
     return role[value]
 
 
 def role_color(value):
-    role = ['', '', 'bg-warning', 'bg-danger']
+    role = ['', '', 'bg-warning', 'bg-danger', 'bg-info']
     return role[value]
 
 
