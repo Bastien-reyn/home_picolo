@@ -19,12 +19,13 @@ from django.urls import path
 from home_picolo import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    #path('admin/', admin.site.urls),
     path('', views.index, name='index'),
     path('game/', views.game, name='game'),
     path('normal', views.normal, name='normal'),
     path('hot', views.hot, name='normal'),
     path('drink', views.drink, name='normal'),
-    path('add', views.add, name='normal'),
+    path('add', views.add_api, name='normal'),
+    path('_add', views.add_api, name='normal'),
 
 ]

@@ -1,3 +1,4 @@
+{% load extras %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,15 +33,39 @@
         {{ question.question }}
 	</div>
 	<div class="mb-4">
-		<a href="/normal"><button class="btn btn-large bg-success fs-4 p-4 w-100">Suivant</button></a>
+		<button class="btn btn-large bg-success fs-4 p-4 w-100" data-action="next">Suivant</button>
 	</div>
 </div>
 
 <script>
+let list, current = 0 ;
+    {% if list %}
+         {% autoescape off %}
+             list = {{ list }};
+             console.log(list);
+             list.sort(function() { return 0.5 - Math.random() })
+             console.log(list);
+             $('#question').html(list[0].question)
+        {% endautoescape %}
+    {% endif %}
 
 	$(function (){
 	    let players = JSON.parse(Cookies.get('players'));
-        $('#player').html(players[Math.floor(Math.random()*players.length)])
+	    players.sort(function() { return 0.5 - Math.random() })
+        $('#player').html(players[current%players.length])
+
+	    $('[data-action="next"]').on('click',function () {
+            current++;
+            if (current === list.length){
+                window.location.href = '/game'
+            }
+            if(current%4 === 0){
+                players.sort(function() { return 0.5 - Math.random() });
+            }
+            $('#player').html(players[current%players.length]);
+            $('#question').html(list[current].question);
+        })
+
 	})
 </script>
 </body>

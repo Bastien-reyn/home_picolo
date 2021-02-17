@@ -1,7 +1,8 @@
+import json
 import random
 
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
 from django.template import loader
@@ -20,33 +21,50 @@ def game(request):
 
 
 def normal(request):
-    questions = Question.objects.filter(type=1)
+    p = []
     template = loader.get_template('question.html')
-    return HttpResponse(template.render({'question': random.choice(questions), 'color': 'darkslategray'}, request))
+    questions = Question.objects.filter(type=1)
+    for q in questions:
+        p.append({'question': q.question, 'type': q.type})
+    return HttpResponse(template.render({'list': json.dumps(p), 'color': 'darkslategray'}, request))
 
 
 def drink(request):
-    questions = Question.objects.filter(type=2)
+    p = []
     template = loader.get_template('question.html')
-    return HttpResponse(template.render({'question': random.choice(questions), 'color': 'seagreen'}, request))
+    questions = Question.objects.filter(type=2)
+    for q in questions:
+        p.append({'question': q.question, 'type': q.type})
+    return HttpResponse(template.render({'list': json.dumps(p), 'color': 'seagreen'}, request))
 
 
 def hot(request):
-    questions = Question.objects.filter(type=3)
+    p = []
     template = loader.get_template('question.html')
-    return HttpResponse(template.render({'question': random.choice(questions), 'color': 'darkred'}, request))
-
-
-def add(request):
     questions = Question.objects.filter(type=3)
-    template = loader.get_template('question.html')
-    return HttpResponse(template.render({'question': random.choice(questions), 'color': 'darkred'}, request))
+    for q in questions:
+        p.append({'question': q.question, 'type': q.type})
+    return HttpResponse(template.render({'list': json.dumps(p), 'color': 'darkred'}, request))
 
 
 def add_api(request):
-    questions = Question.objects.filter(type=3)
-    template = loader.get_template('question.html')
-    return HttpResponse(template.render({'question': random.choice(questions), 'color': 'darkred'}, request))
+    print(request.COOKIES.get('players'))
+    print(request.POST.get('type'))
+    questions = Question.objects.all().order_by('type')
+    if request.POST.get('question') is not None and request.POST.get('type') is not None and request.POST.get('type') in ['1','2','3']:
+        try:
+            Question.objects.create(type=request.POST.get('type'), question=request.POST.get('question'))
+            return render(request, 'add.html', {
+                'success_message': "Ajouté",
+                'questions': questions
+            })
+        except:
+            return render(request, 'add.html', {
+                'error_message': "Erreur d'ajout",
+                'questions': questions
+            })
+    return render(request, 'add.html', {'questions': questions})
+
 
 
 

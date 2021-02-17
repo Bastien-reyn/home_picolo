@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'yo4t^4hg$@8(qtpq0a!qz+a&$q-45j&&vi4k2wy^yl4z30$h_m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['picolo.hinna.fr', '127.0.0.1']
 

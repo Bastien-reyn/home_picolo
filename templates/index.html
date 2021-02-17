@@ -21,6 +21,8 @@
     </style>
 </head>
 <body>
+<div style="position: absolute; top:1rem; right: 1rem;"><a href="/add"><i class="fa fa-plus fs-1"></i></a></div>
+
 <div class="container text-center">
 	<div class="mt-4 fw-bold">
 		<h1>Bienvenu !</h1> Picolo fait maison
@@ -49,7 +51,7 @@
 	function display_players(){
 		let html = '';
 		$.each(players, function (k,v){
-			html += `<span class="badge bg-light text-dark me-2 fs-1">${v} <i class="fa fa-times" data-id="${k}"></i></span>`
+			html += `<span class="badge bg-light text-dark me-2 fs-1 mt-2">${v} <i class="fa fa-times" data-id="${k}"></i></span>`
 		})
 		$('#players').html(html);
 	}
