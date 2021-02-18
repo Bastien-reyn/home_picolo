@@ -28,7 +28,7 @@ def normal(request):
     questions = Question.objects.filter(type=1)
     for q in questions:
         p.append({'question': q.question, 'type': q.type})
-    return HttpResponse(template.render({'list': json.dumps(p), 'color': 'darkslategray'}, request))
+    return HttpResponse(template.render({'list': json.dumps(p), 'color': 'darkslategray', 'players': request.COOKIES.get('players')}, request))
 
 
 def drink(request):
@@ -37,7 +37,7 @@ def drink(request):
     questions = Question.objects.filter(type=2)
     for q in questions:
         p.append({'question': q.question, 'type': q.type})
-    return HttpResponse(template.render({'list': json.dumps(p), 'color': 'seagreen'}, request))
+    return HttpResponse(template.render({'list': json.dumps(p), 'color': 'seagreen', 'players': request.COOKIES.get('players')}, request))
 
 
 def hot(request):
@@ -46,7 +46,7 @@ def hot(request):
     questions = Question.objects.filter(type=3)
     for q in questions:
         p.append({'question': q.question, 'type': q.type})
-    return HttpResponse(template.render({'list': json.dumps(p), 'color': 'darkred'}, request))
+    return HttpResponse(template.render({'list': json.dumps(p), 'color': 'darkred', 'players': request.COOKIES.get('players')}, request))
 
 
 def tod(request):
@@ -55,7 +55,7 @@ def tod(request):
     questions = Question.objects.filter(Q(type=4) | Q(type=1))
     for q in questions:
         p.append({'question': q.question, 'type': q.type})
-    return HttpResponse(template.render({'list': json.dumps(p), 'color': '#0dcaf0'}, request))
+    return HttpResponse(template.render({'list': json.dumps(p), 'color': '#0dcaf0', 'players': request.COOKIES.get('players')}, request))
 
 
 def add(request):
