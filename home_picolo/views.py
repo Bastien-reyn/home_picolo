@@ -53,7 +53,7 @@ def hot(request):
 def tod(request):
     p = []
     template = loader.get_template('question.html')
-    questions = Question.objects.filter(Q(type=4) | Q(type=1))
+    questions = Question.objects.filter(type=4)
     for q in questions:
         p.append({'question': q.question, 'type': q.type})
     return HttpResponse(template.render({'list': json.dumps(p), 'color': '#0dcaf0', 'players': request.COOKIES.get('players')}, request))
