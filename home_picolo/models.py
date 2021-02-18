@@ -5,4 +5,5 @@ from django.db import models
 
 class Question(models.Model):
     question = models.TextField(blank=False, null=False)
-    type = models.IntegerField(max_length=1, blank=False, null=False)
+    type = models.IntegerField(blank=False, null=False)
+

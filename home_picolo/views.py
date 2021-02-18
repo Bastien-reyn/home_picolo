@@ -10,6 +10,7 @@ from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
 
 from home_picolo.models import Question
+from picolo.settings import BASE_DIR
 
 
 def index(request):
@@ -98,7 +99,23 @@ def add_api(request):
                 'success': False
             }, safe=False)
 
-
-
+'''
+def csv(request):
+   filename = str(BASE_DIR / 'default-2.json')
+    f = open(filename, 'r')
+    txt = f.read()
+    dt = json.loads(txt)
+    print(dt[0])
+    for d in dt:
+        if d.get('language') == 'fr' and d.get('nb_players') <= 2:
+            if d.get('pack_name') == 'default':
+                Question_of.objects.create(question=d.get('text'), type=1)
+            elif d.get('pack_name') == 'hot':
+                Question_of.objects.create(question=d.get('text'), type=3)
+    qs = Question_of.objects.all()
+    for q in qs:
+        q.question = q.question.replace('%s', '%', 1).replace('%s', '%%')
+        q.save()
+    return JsonResponse([], safe=False)'''
 
 
