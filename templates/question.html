@@ -95,6 +95,7 @@
     }
 
     $(function () {
+        $('body').scrollTop($('body')[0].scrollHeight);
         //let players = JSON.parse(Cookies.get('players'));
         const nb_roud = Cookies.get('nb_roud') ?? 6;
 
