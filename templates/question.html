@@ -53,8 +53,14 @@ let list, current = 0, players, player;
         {% endautoescape %}
     {% endif %}
     function replace_question(s, player){
-        return s.replace('$', Math.floor(Math.random() * 5)+1).replace('%%', players[get_other_player(players, player)]).replace('%', player)
+        return randomiseString(s.replace('%%', players[get_other_player(players, player)]).replace('%', player))
     }
+    function randomiseString(str){
+        let _str = str.replace(/[$]/g,function(a){
+        return Math.floor(Math.random() * 5)+1
+    });
+    return _str;
+}
     function get_other_player(players, current_player){
         let rp = Math.floor(Math.random() * players.length);
         return (players[rp] === current_player ? get_other_player(players, current_player) : rp)
